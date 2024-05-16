@@ -1,0 +1,109 @@
+{
+    "openapi": "3.0.2",
+    "info": {
+        "title": "Asset API",
+        "version": "1.0"
+    },
+    "servers": [
+        {
+            "url": "https://ssc-telkomuniversity-sby.com/api"
+        }
+    ],
+    "paths": {
+        "/asset": {
+            "post": {
+                "description": "Create new asset",
+                "parameters": [
+                    {
+                        "name": "Autorization",
+                        "in": "header",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Create new asset",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    },
+                                    "category": {
+                                        "type": "string"
+                                    },
+                                    "num": {
+                                        "type": "integer"
+                                    },
+                                    "image_path": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Succes create new asset",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "number"
+                                                },
+                                                "name": {
+                                                    "type": "string"
+                                                },
+                                                "description": {
+                                                    "type": "string"
+                                                },
+                                                "category": {
+                                                    "type": "string"
+                                                },
+                                                "num": {
+                                                    "type": "integer"
+                                                },
+                                                "image_path": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get": {
+                "description": "Get all asset"
+            }
+        },
+        "/asset/{id}": {
+            "put": {
+                "description": "Update asset"
+            },
+            "get": {
+                "description": "Get Asset"
+            },
+            "delete": {
+                "description": "remove asset"
+            }
+        }
+    }
+}

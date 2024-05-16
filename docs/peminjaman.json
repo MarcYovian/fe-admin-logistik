@@ -1,0 +1,18 @@
+[
+    {
+        "borrowing_id": 1,
+        "student_id": 1,
+        "asset_id": 1,
+        "borrowing_date": "2024-03-20T08:30:27.000Z",
+        "return_date": "2024-03-22T08:30:27.000Z",
+        "status": "in process"
+    },
+    {
+        "borrowing_id": 2,
+        "student_id": 1,
+        "asset_id": 3,
+        "borrowing_date": "2024-03-20T08:30:27.000Z",
+        "return_date": "2024-03-22T08:30:27.000Z",
+        "status": "in process"
+    }
+]

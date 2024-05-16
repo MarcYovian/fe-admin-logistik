@@ -1,0 +1,28 @@
+{
+    "data": [
+        {
+            "id": "1",
+            "name": "Kelas 2.20",
+            "description": "Ruang kelas pengajaran",
+            "category": "fasilitas",
+            "num": "1",
+            "image_path": "//unsplash.com/photos/a-man-and-a-woman-writing-on-a-whiteboard-K8AxP6RcqgA"
+        },
+        {
+            "id": "2",
+            "name": "Kelas 2.21",
+            "description": "Ruang kelas pengajaran",
+            "category": "fasilitas",
+            "num": "1",
+            "image_path": "https://unsplash.com/photos/a-man-and-a-woman-writing-on-a-whiteboard-K8AxP6RcqgA"
+        },
+        {
+            "id": "3",
+            "name": "handbag 2.20",
+            "description": "peralatan kelas 2.20",
+            "category": "asset",
+            "num": "1",
+            "image_path": "https://unsplash.com/photos/a-man-and-a-woman-writing-on-a-whiteboard-K8AxP6RcqgA"
+        }
+    ]
+}
