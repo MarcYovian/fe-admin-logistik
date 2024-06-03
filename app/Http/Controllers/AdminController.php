@@ -25,10 +25,6 @@ class AdminController extends Controller
     public function actionLogin(LoginAdminRequest $request)
     {
         $data = $request->validated();
-        // $data = [
-        //     'username' => $request['username'],
-        //     'password' => $request['password'],
-        // ];
 
         try {
             $response = APIService::PostDataByEndPoint('admins/login', $data);
