@@ -4,6 +4,7 @@ use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AssetController;
+use App\Http\Controllers\BorrowingController;
 use App\Http\Middleware\CheckAPIToken;
 
 Route::get('/', function () {
@@ -15,10 +16,23 @@ Route::redirect('/', '/login', 301);
 Route::get('login', [AdminController::class, 'login'])->name('login');
 
 Route::post('login', [AdminController::class, 'actionLogin'])->name('postLogin');
-Route::get('logout', [AdminController::class, 'logout'])->name('logout');
 
-Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+Route::middleware(['auth.api'])->group(function () {
+    Route::get('logout', [AdminController::class, 'logout'])->name('logout');
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-// Assets
-Route::get('assets/', [AssetController::class, 'index'])->name('assets');
-Route::get('assets/{id}', [AssetController::class, 'show'])->where('id', '[0-9]+')->name('assets.details');
+
+    // Assets
+    // Route::resource('assets', AssetController::class)->scoped(['asset' => 'id',]);
+    Route::get('assets', [AssetController::class, 'index'])->name('assets.index');
+    Route::get('assets/create', [AssetController::class, 'create'])->name('assets.create');
+    Route::post('assets', [AssetController::class, 'store'])->name('assets.store');
+    Route::get('assets/{id}', [AssetController::class, 'show'])->where('id', '[0-9]+')->name('assets.show');
+
+    Route::middleware(['assets'])->group(function () {
+        Route::get('assets/{id}/edit', [AssetController::class, 'edit'])->where('id', '[0-9]+')->name('assets.edit');
+        Route::put('assets/{id}/update', [AssetController::class, 'update'])->where('id', '[0-9]+')->name('assets.update');
+        Route::delete('assets/{id}/delete', [AssetController::class, 'destroy'])->where('id', '[0-9]+')->name('assets.destroy');
+    });
+    Route::get('borrowings', [BorrowingController::class, 'index'])->name('borrowings.index');
+});

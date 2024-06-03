@@ -2,6 +2,9 @@
 
 namespace App\Services;
 
+use App\Helpers\EndPoints;
+use Google\Service\Games\EndPoint;
+use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
@@ -10,19 +13,11 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 class APIService
 {
     /**
-     * Create a new class instance.
-     */
-    public function __construct()
-    {
-        //
-    }
-
-    /**
      * Check if API token is present in session.
      *
      * @return bool
      */
-    public function hasApiToken(): bool
+    public static function hasApiToken(): bool
     {
         return Session::has('api_token');
     }
@@ -32,59 +27,111 @@ class APIService
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function unauthorizedRedirect(): \Illuminate\Http\RedirectResponse
+    public static function unauthorizedRedirect(): \Illuminate\Http\RedirectResponse
     {
         return redirect('/login')->withErrors(['message' => 'Unauthorized']);
     }
 
-    /**
-     * Get API headers with authorization token.
-     *
-     * @param string $token
-     * @return array
-     */
-
-    public function getApiHeaders($token): array
+    public static function getHttpHeaders()
     {
-        return [
-            'Authorization' => $token,
+        $bearerToken = Session::get('api_token');
+        $headers = [
+            'headers' => [
+                'Accept' => 'application/json',
+                'Authorization' => 'Bearer ' . $bearerToken,
+            ],
+            'http_errors' => false,
         ];
+        return $headers;
     }
 
-    /**
-     * Make an API request with error handling.
-     * @param string $url
-     * @param string $endpoint
-     * @param array $header
-     * @return mixed
-     */
-    public function makeApiRequest($url, $endpoint, $headers)
+    public static function GetDataByEndPoint($endPoint)
     {
-        try {
-            $response = Http::withHeaders($headers)->get($url . $endpoint);
-            $response->throw(); // Throw an exception for 4xx and 5xx status codes
-            return $response->json();
-        } catch (\Exception $e) {
-            //throw $e;
-            $this->handleApiError($e);
-        }
+        $baseApiUrl = EndPoints::$BASE_URL;
+        $url = $baseApiUrl . $endPoint;
+        $client = new Client(self::getHttpHeaders());
+        $response = $client->get($url, ['verify' => false]);
+        $resp['statusCode'] = $response->getStatusCode();
+        $resp['bodyContents'] =
+            json_decode($response->getBody()->getContents(), true);
+        // dd($resp);
+        return $resp;
     }
 
-    /**
-     * Handle API request errors.
-     * @param \Exception $e
-     */
-    public function HandleApiError($e)
+    public static function PostDataByEndPoint($endPoint, $body, $files = [])
     {
-        $errors = json_encode($e->getMessage(), true);
-        if ($e instanceof HttpException && $e->getStatusCode() >= 400 && $e->getStatusCode() < 500) {
-            // Log out user for 4xx errors
-            Session::flush();
-            return redirect()->route('login');
-        } else {
-            // Log or display error message for other exceptions
-            Log::error($e->getMessage());
-            // dd($errors); // Remove this line in production
+        $baseApiUrl = EndPoints::$BASE_URL;
+        $url = $baseApiUrl . $endPoint;
+        $client = new Client(self::getHttpHeaders());
+        $multipart = [];
+
+        foreach ($body as $name => $contents) {
+            if ($name != 'image') {
+                $multipart[] = [
+                    'name' => $name,
+                    'contents' => $contents,
+                ];
+            }
         }
+
+        foreach ($files as $name => $file) {
+            $multipart[] = [
+                'name' => $name,
+                'contents' => fopen($file, 'r'),
+                'filename' => $file->getClientOriginalName(),
+            ];
+        }
+
+        $request = $client->post($url, [
+            'multipart' => $multipart,
+            'verify' => false
+        ]);
+
+        $response['statusCode'] = $request->getStatusCode();
+        $response['bodyContents'] = json_decode($request->getBody()->getContents(), true);
+        return $response;
+    }
+    public static function PutDataByEndPoint($endPoint, $body, $files = [])
+    {
+        $baseApiUrl = EndPoints::$BASE_URL;
+        $url = $baseApiUrl . $endPoint;
+        $client = new Client(self::getHttpHeaders());
+        $multipart = [];
+
+        foreach ($body as $name => $contents) {
+            if ($name != 'image') {
+                $multipart[] = [
+                    'name' => $name,
+                    'contents' => $contents,
+                ];
+            }
+        }
+
+        foreach ($files as $name => $file) {
+            $multipart[] = [
+                'name' => $name,
+                'contents' => fopen($file, 'r'),
+                'filename' => $file->getClientOriginalName(),
+            ];
+        }
+
+        $request = $client->put($url, [
+            'multipart' => $multipart,
+            'verify' => false
+        ]);
+
+        $response['statusCode'] = $request->getStatusCode();
+        $response['bodyContents'] = json_decode($request->getBody()->getContents(), true);
+        return $response;
+    }
+    public static function DeleteDataByEndPoint($endPoint, $body = [])
+    {
+        $baseApiUrl = EndPoints::$BASE_URL;
+        $url = $baseApiUrl . $endPoint;
+        $client = new Client(self::getHttpHeaders());
+        $request = $client->delete($url, ['body' => json_encode($body), 'verify' => false]);
+        $response['statusCode'] = $request->getStatusCode();
+        $response['bodyContents'] = json_decode($request->getBody()->getContents(), true);
+        return $response;
     }
 }

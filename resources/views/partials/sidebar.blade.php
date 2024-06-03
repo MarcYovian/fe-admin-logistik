@@ -15,13 +15,18 @@
                     <ul class="mb-6 flex flex-col gap-2">
                         {{-- MENU DASHBOARD --}}
                         <li>
-                            <a class="group relative flex items-center gap-2 rounded-sm px-4 py-2 font-medium text-slate-300 duration-300 ease-in-out hover:bg-gray-400 dark:hover:bg-meta-4 @if ($url == 'dashboard') bg-gray-400 @endif"
+                            <a class="group relative flex items-center gap-2 rounded-sm px-4 py-2 font-medium text-slate-300 duration-300 ease-in-out hover:bg-gray-400 dark:hover:bg-meta-4 @if ($active == 'dashboard') bg-gray-400 @endif"
                                 href="{{ route('dashboard') }}">Dashboard</a>
                         </li>
                         {{-- MENU ASSET --}}
                         <li>
-                            <a class="group relative flex items-center gap-2 rounded-sm px-4 py-2 font-medium text-slate-300 duration-300 ease-in-out hover:bg-gray-400 dark:hover:bg-meta-4 @if ($url == 'assets') bg-gray-400 @endif"
-                                href="{{ route('assets') }}">Assets</a>
+                            <a class="group relative flex items-center gap-2 rounded-sm px-4 py-2 font-medium text-slate-300 duration-300 ease-in-out hover:bg-gray-400 dark:hover:bg-meta-4 @if ($active == 'assets') bg-gray-400 @endif"
+                                href="{{ route('assets.index') }}">Assets</a>
+                        </li>
+                        {{-- MENU borrowing --}}
+                        <li>
+                            <a class="group relative flex items-center gap-2 rounded-sm px-4 py-2 font-medium text-slate-300 duration-300 ease-in-out hover:bg-gray-400 dark:hover:bg-meta-4 @if ($active == 'borrowings') bg-gray-400 @endif"
+                                href="{{ route('borrowings.index') }}">Peminjaman</a>
                         </li>
                     </ul>
                 </div>
@@ -31,7 +36,7 @@
                     <ul class="mb-6 flex flex-col gap-2">
                         {{-- MENU DASHBOARD --}}
                         <li>
-                            <a class="group relative flex items-center gap-2 rounded-sm px-4 py-2 font-medium text-slate-300 duration-300 ease-in-out hover:bg-gray-400 dark:hover:bg-meta-4 @if ($url == 'settings') bg-gray-400 @endif"
+                            <a class="group relative flex items-center gap-2 rounded-sm px-4 py-2 font-medium text-slate-300 duration-300 ease-in-out hover:bg-gray-400 dark:hover:bg-meta-4 @if ($active == 'settings') bg-gray-400 @endif"
                                 href="#">Settings</a>
                         </li>
                         {{-- MENU ASSET --}}

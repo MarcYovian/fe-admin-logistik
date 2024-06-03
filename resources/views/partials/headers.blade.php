@@ -9,7 +9,7 @@
                     <span class="hidden text-right lg:block">
                         <span class="block text-sm font-medium text-black dark:text-white">{{ $admin['name'] }}</span>
                         <span class="block text-xs font-medium text-gray-600 dark:text-gray-400">admin
-                            {{ $admin['role'] }}</span>
+                            {{ $admin['type'] }}</span>
                     </span>
 
                     <span class="h-12 w-12 rounded-full">
