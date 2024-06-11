@@ -84,7 +84,7 @@
                             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                 <td class="p-4">
                                     <img src="{{ $asset['url_image'] }}"
-                                        class="h-20 object-cover md:w-32 max-w-full max-h-full" alt="Apple Watch">
+                                        class="h-20 object-cover md:w-32 max-w-full max-h-full" alt="{{ $asset['name'] }}">
                                 </td>
                                 <td scope="row" class="px-6 py-4 max-w-48 font-medium text-gray-900 dark:text-white">
                                     {{ $asset['name'] }}

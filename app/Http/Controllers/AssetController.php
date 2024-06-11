@@ -129,7 +129,7 @@ class AssetController extends Controller implements HasMiddleware
         $data = [
             'admin' => $admin,
             'asset' => $asset,
-            'url' => $asset['data']['name'],
+            'url' => $asset['name'],
             'active' => "assets",
             // 'assets' => $assets
         ];

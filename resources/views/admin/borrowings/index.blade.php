@@ -39,5 +39,42 @@
         <div class="flex justify-between flex-wrap md:flex-nowrap items-center pt-3 pb-2 mb-3 border-b dark:text-white">
             <h1 class="text-3xl font-bold">Borrowings Asset</h1>
         </div>
+        <!-- Button to create new borrowing -->
+        <div class="w-full flex justify-end">
+            <a href="{{ route('borrowings.create.step1') }}" type="button"
+                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Create
+                New Borrowing</a>
+        </div>
+        <div class="bg-white shadow-md rounded-lg overflow-hidden">
+            <table class="min-w-full bg-white">
+                <thead class="bg-gray-800 text-white">
+                    <tr>
+                        <th class="w-1/6 text-left py-3 px-4 uppercase font-semibold text-sm">ID</th>
+                        <th class="w-1/6 text-left py-3 px-4 uppercase font-semibold text-sm">UKM Name</th>
+                        <th class="w-1/6 text-left py-3 px-4 uppercase font-semibold text-sm">Event Name</th>
+                        <th class="w-1/6 text-left py-3 px-4 uppercase font-semibold text-sm">Participants</th>
+                        <th class="w-1/6 text-left py-3 px-4 uppercase font-semibold text-sm">Event Date</th>
+                        <th class="w-1/6 text-left py-3 px-4 uppercase font-semibold text-sm">Student</th>
+                        <th class="w-1/6 text-left py-3 px-4 uppercase font-semibold text-sm">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="text-gray-700">
+                    @foreach ($borrowings as $borrowing)
+                        <tr>
+                            <td class="w-1/6 text-left py-3 px-4">{{ $borrowing['id'] }}</td>
+                            <td class="w-1/6 text-left py-3 px-4">{{ $borrowing['ukm_name'] }}</td>
+                            <td class="w-1/6 text-left py-3 px-4">{{ $borrowing['event_name'] }}</td>
+                            <td class="w-1/6 text-left py-3 px-4">{{ $borrowing['num_of_participants'] }}</td>
+                            <td class="w-1/6 text-left py-3 px-4">
+                                {{ \Carbon\Carbon::parse($borrowing['event_date'])->format('d M Y H:i') }}</td>
+                            <td class="w-1/6 text-left py-3 px-4">{{ $borrowing['student']['name'] }}</td>
+                            <td class="w-1/6 text-left py-3 px-4">
+                                <a href="#" class="text-blue-500 hover:underline">View Details</a>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     </main>
 @endsection
