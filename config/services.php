@@ -30,20 +30,23 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
-    'google' => [
-        'client_id' => env('GOOGLE_CLIENT_ID'),
-        'client_secret' => env('GOOGLE_CLIENT_SECRET'),
-        'redirect_uri' => env('GOOGLE_REDIRECT_URI'),
-        'redirect_callback' => env('GOOGLE_REDIRECT_CALLBACK'),
-        'scopes' => [
-            \Google_Service_Calendar::CALENDAR_EVENTS_READONLY,
-            \Google_Service_Calendar::CALENDAR_READONLY,
-            \Google_Service_Oauth2::OPENID,
-            \Google_Service_Oauth2::USERINFO_EMAIL,
-            \Google_Service_Oauth2::USERINFO_PROFILE,
-        ],
-        'approval_prompt' => env('GOOGLE_APPROVAL_PROMPT', 'force'),
-        'access_type' => env('GOOGLE_ACCESS_TYPE', 'offline'),
-        'include_granted_scopes' => true,
+    'api' => [
+        'base_url' => env('API_BASE_URL', '127.0.0.1:8000/api')
     ],
+    // 'google' => [
+    //     'client_id' => env('GOOGLE_CLIENT_ID'),
+    //     'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+    //     'redirect_uri' => env('GOOGLE_REDIRECT_URI'),
+    //     'redirect_callback' => env('GOOGLE_REDIRECT_CALLBACK'),
+    //     'scopes' => [
+    //         \Google_Service_Calendar::CALENDAR_EVENTS_READONLY,
+    //         \Google_Service_Calendar::CALENDAR_READONLY,
+    //         \Google_Service_Oauth2::OPENID,
+    //         \Google_Service_Oauth2::USERINFO_EMAIL,
+    //         \Google_Service_Oauth2::USERINFO_PROFILE,
+    //     ],
+    //     'approval_prompt' => env('GOOGLE_APPROVAL_PROMPT', 'force'),
+    //     'access_type' => env('GOOGLE_ACCESS_TYPE', 'offline'),
+    //     'include_granted_scopes' => true,
+    // ],
 ];

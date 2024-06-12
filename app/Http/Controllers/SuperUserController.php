@@ -42,12 +42,12 @@ class SuperUserController extends Controller
     public function update(Request $request, $id)
     {
         $data = $request['type'];
-        
+
         $files = [];
         if ($request->hasFile('image')) {
             $files['image'] = $request->file('image');
         }
-        
+
         try {
             $resp = APIService::PutDataByEndPoint('users/' . $id, $data, $files);
             dd("test");
@@ -70,6 +70,35 @@ class SuperUserController extends Controller
             }
 
             return redirect()->route('assets.index')->with('success', 'Asset updated successfully');
+        } catch (HttpException $e) {
+            dd($e->getMessage());
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->withErrors(['message' => 'An error occurred. Please try again later.'])->withInput();
+        }
+    }
+
+    public function destroy($id)
+    {
+        try {
+            $resp = APIService::DeleteDataByEndPoint('admins/users/' . $id);
+            $statusCode = $resp['statusCode'];
+            if ($statusCode >= 500) {
+                $errors = ['errors' => ['message' => 'Server error occurred. Please try again later.']];
+                throw new HttpException(
+                    statusCode: $statusCode,
+                    message: json_encode($errors)
+                );
+            }
+            // Handle client error
+            if ($statusCode >= 400 && $statusCode < 500) {
+                $errors = $resp['bodyContents'];
+                throw new HttpException(
+                    statusCode: $statusCode,
+                    message: json_encode($errors)
+                );
+            }
+            return redirect()->route('users')->with('success', 'Admin deleted successfully');
         } catch (HttpException $e) {
             dd($e->getMessage());
         } catch (\Throwable $th) {

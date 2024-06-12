@@ -27,6 +27,7 @@ class AssetController extends Controller implements HasMiddleware
      */
     public function index()
     {
+
         $page = request()->query('page', 1);
 
         $respAdmin = ApiService::GetDataByEndPoint('admins/current');
@@ -227,12 +228,12 @@ class AssetController extends Controller implements HasMiddleware
                     message: json_encode($errors)
                 );
             }
+            return redirect()->route('assets.index')->with('success', 'Asset deleted successfully');
         } catch (HttpException $e) {
             dd($e->getMessage());
         } catch (\Throwable $th) {
             //throw $th;
             return redirect()->back()->withErrors(['message' => 'An error occurred. Please try again later.'])->withInput();
         }
-        return redirect()->route('assets.index')->with('success', 'Asset deleted successfully');
     }
 }
