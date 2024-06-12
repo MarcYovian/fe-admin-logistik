@@ -47,7 +47,7 @@ class APIService
 
     public static function GetDataByEndPoint($endPoint)
     {
-        $baseApiUrl = EndPoints::$BASE_URL;
+        $baseApiUrl = EndPoints::getBaseUrl();
         $url = $baseApiUrl . $endPoint;
         $client = new Client(self::getHttpHeaders());
         $response = $client->get($url, ['verify' => false]);
@@ -60,7 +60,7 @@ class APIService
 
     public static function PostDataByEndPoint($endPoint, $body, $files = [])
     {
-        $baseApiUrl = EndPoints::$BASE_URL;
+        $baseApiUrl = EndPoints::getBaseUrl();
         $url = $baseApiUrl . $endPoint;
         $client = new Client(self::getHttpHeaders());
         $multipart = [];
@@ -93,7 +93,7 @@ class APIService
     }
     public static function PutDataByEndPoint($endPoint, $body, $files = [])
     {
-        $baseApiUrl = EndPoints::$BASE_URL;
+        $baseApiUrl = EndPoints::getBaseUrl();
         $url = $baseApiUrl . $endPoint;
         $client = new Client(self::getHttpHeaders());
         $multipart = [];
@@ -126,7 +126,7 @@ class APIService
     }
     public static function DeleteDataByEndPoint($endPoint, $body = [])
     {
-        $baseApiUrl = EndPoints::$BASE_URL;
+        $baseApiUrl = EndPoints::getBaseUrl();
         $url = $baseApiUrl . $endPoint;
         $client = new Client(self::getHttpHeaders());
         $request = $client->delete($url, ['body' => json_encode($body), 'verify' => false]);

@@ -17,7 +17,6 @@ class CheckAPIToken
     public function handle(Request $request, Closure $next): Response
     {
         // Periksa apakah token ada dalam sesi
-        // dd(Session::has('api_token'));
         if (!Session::has('api_token')) {
             // Redirect ke halaman login jika tidak ada token
             return redirect('/login')->withErrors(['message' => 'Unauthorized']);
