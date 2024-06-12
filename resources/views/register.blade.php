@@ -19,8 +19,8 @@
         </div>
         <!-- Right: Login Form -->
         <div class="lg:p-52 md:p-60 sm:20 p-8 w-full lg:w-1/2">
-            <h1 class="text-3xl font-semibold mb-4 text-violet-900">Welcome back</h1>
-            <form action="{{ route('postLogin') }}" method="POST">
+            <h1 class="text-3xl font-semibold mb-4 text-violet-900">Join with us</h1>
+            <form action="{{ route('postRegister') }}" method="POST">
                 @csrf
 
                 {{-- Error Message --}}
@@ -38,13 +38,33 @@
                     </div>
                 @endif
 
-                <!-- Username Input -->
+                <!-- name Input -->
                 <div class="mb-4">
                     <label for="username" class="block text-gray-600 mb-2">Username</label>
                     <input type="text" id="username" name="username"
                         class="w-full border rounded-md py-2 px-3 focus:outline-none focus:border-violet-300 bg-white text-gray-800"
                         autocomplete="off">
                     @error('username')
+                        <p class="text-red-500 text-xs italic">{{ $message }}</p>
+                    @enderror
+                </div>
+                <!-- name Input -->
+                <div class="mb-4">
+                    <label for="name" class="block text-gray-600 mb-2">name</label>
+                    <input type="text" id="name" name="name"
+                        class="w-full border rounded-md py-2 px-3 focus:outline-none focus:border-violet-300 bg-white text-gray-800"
+                        autocomplete="off">
+                    @error('name')
+                        <p class="text-red-500 text-xs italic">{{ $message }}</p>
+                    @enderror
+                </div>
+                <!-- Email Input -->
+                <div class="mb-4">
+                    <label for="email" class="block text-gray-600 mb-2">email</label>
+                    <input type="email" id="email" name="email"
+                        class="w-full border rounded-md py-2 px-3 focus:outline-none focus:border-violet-300 bg-white text-gray-800"
+                        autocomplete="off">
+                    @error('email')
                         <p class="text-red-500 text-xs italic">{{ $message }}</p>
                     @enderror
                 </div>
@@ -61,10 +81,7 @@
                         <input type="checkbox" id="remember" name="remember" class="text-blue-500">
                         <label for="remember" class="text-violet-900 ml-2">Remember Me</label>
                     </div>
-                    <!-- Forgot Password Link -->
-                    <div class="mb-6 text-violet-400">
-                        <a href="#" class="hover:underline">Forgot Password?</a>
-                    </div>
+
                 </div>
                 <!-- Login Button -->
                 <button type="submit"
@@ -72,7 +89,7 @@
             </form>
             <!-- Sign up  Link -->
             <div class="mt-6 text-violet-400 text-center">
-                <a href="{{ route('register') }}" class="hover:underline">don't have account? sign up Here</a>
+                <a href="{{ route('login') }}" class="hover:underline">have an account? sign-in Here</a>
             </div>
         </div>
     </div>

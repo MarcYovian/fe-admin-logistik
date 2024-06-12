@@ -1,11 +1,12 @@
 <?php
 
-use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Middleware\CheckAPIToken;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AssetController;
 use App\Http\Controllers\BorrowingController;
-use App\Http\Middleware\CheckAPIToken;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\SuperUserController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -14,13 +15,19 @@ Route::get('/', function () {
 Route::redirect('/', '/login', 301);
 
 Route::get('login', [AdminController::class, 'login'])->name('login');
+Route::get('register', [AdminController::class, 'register'])->name('register');
 
 Route::post('login', [AdminController::class, 'actionLogin'])->name('postLogin');
+Route::post('register', [AdminController::class, 'actionRegister'])->name('postRegister');
 
 Route::middleware(['auth.api'])->group(function () {
     Route::get('logout', [AdminController::class, 'logout'])->name('logout');
-    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+    Route::get('users', [SuperUserController::class, 'index'])->name('users');
+    Route::put('users/{id}', [SuperUserController::class, 'update'])->name('users.update');
+    Route::delete('users/{id}', [SuperUserController::class, 'destroy'])->name('users.destroy');
+
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     // Assets
     // Route::resource('assets', AssetController::class)->scoped(['asset' => 'id',]);
