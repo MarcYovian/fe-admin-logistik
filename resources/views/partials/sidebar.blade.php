@@ -13,11 +13,13 @@
                     <h3 class="mb-4 ml-4 text-sm font-medium text-slate-500">MENU</h3>
 
                     <ul class="mb-6 flex flex-col gap-2">
+                        @if ($admin['type'] == 'superuser')
                         {{-- USERS (SUPER USER) --}}
                         <li>
                             <a class="group relative flex items-center gap-2 rounded-sm px-4 py-2 font-medium text-slate-300 duration-300 ease-in-out hover:bg-gray-400 dark:hover:bg-meta-4 @if ($active == 'users') bg-gray-400 @endif"
                                 href="{{ route('users') }}">Users</a>
                         </li>
+                        @endif
                         {{-- MENU DASHBOARD --}}
                         <li>
                             <a class="group relative flex items-center gap-2 rounded-sm px-4 py-2 font-medium text-slate-300 duration-300 ease-in-out hover:bg-gray-400 dark:hover:bg-meta-4 @if ($active == 'dashboard') bg-gray-400 @endif"

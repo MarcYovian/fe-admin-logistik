@@ -18,7 +18,7 @@ class SuperUserController extends Controller
     public function index()
     {
         $page = request()->query('page', 1);
-
+        
         $respAdmin = ApiService::GetDataByEndPoint('admins/current');
         $respAssets = ApiService::GetDataByEndPoint('admins/users');
 
@@ -27,11 +27,11 @@ class SuperUserController extends Controller
             return ApiService::unauthorizedRedirect();
         }
         $admin = $respAdmin['bodyContents']['data'];
-        $assets = $respAssets['bodyContents'];
+        $users = $respAssets['bodyContents'];
 
         $data = [
             'admin' => $admin,
-            'assets' => $assets,
+            'users' => $users,
             'url' => "users",
             'active' => "users",
             'page' => $page
