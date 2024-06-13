@@ -22,6 +22,7 @@ class StoreBorrowingStep1Request extends FormRequest
     public function rules(): array
     {
         return [
+            'student_id' => 'required',
             'ukm_name' => 'required|string|max:100',
             'event_name' => 'required|string|max:200',
             'event_date' => 'required|date',

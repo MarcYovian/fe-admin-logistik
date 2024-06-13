@@ -8,6 +8,7 @@ use App\Services\APIService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class BorrowingController extends Controller
 {
@@ -46,6 +47,8 @@ class BorrowingController extends Controller
     {
         $borrowingData = Session::get('borrowing_step1', []);
         $respAdmin = APIService::GetDataByEndPoint('admins/current');
+        // $respStudent = APIService::GetDataByEndPoint('students');
+        // dd($respStudent);
         if ($respAdmin['statusCode'] >= 400) {
             return redirect()->route('dashboard');
         }
@@ -86,6 +89,7 @@ class BorrowingController extends Controller
     public function storeStep1(StoreBorrowingStep1Request $request)
     {
         $validated = $request->validated();
+        // dd($validated);
         Session::put('borrowing_step1', $validated);
 
         return redirect()->route('borrowings.create.step2');
@@ -93,7 +97,40 @@ class BorrowingController extends Controller
     public function storeStep2(StoreBorrowingStep2Request $request)
     {
         $validated = $request->validated();
-        dd($validated);
+
+        Session::put('borrowing_step2', $validated);
+        $borrowing = Session::get('borrowing_step1', []);
+        $borrowing['assets'] = $validated['assets'];
+        // dd($borrowing);
+        try {
+            $resp = APIService::postDataByEndPoint('borrowings', $borrowing);
+            // dd($resp);
+            $statusCode = $resp['statusCode'];
+            if ($statusCode >= 500) {
+                $errors = ['errors' => ['message' => 'Server error occurred. Please try again later.']];
+                throw new HttpException(
+                    statusCode: $statusCode,
+                    message: json_encode($errors)
+                );
+            }
+            if ($statusCode >= 400 && $statusCode < 500) {
+                $errors = $resp['bodyContents'];
+                throw new HttpException(
+                    statusCode: $statusCode,
+                    message: $errors
+                );
+            }
+            // dd($resp);
+            return redirect()->route('borrowings.index')->with('success', 'Borrowing created successfully');
+        } catch (HttpException $e) {
+            // handle http exception
+            $errors = json_decode($e->getMessage(), true);
+            $error_messages = $errors['errors'];
+            return redirect()->back()->withErrors($error_messages)->withInput();
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->withErrors(['message' => 'An error occurred. Please try again later.']);
+        }
     }
 
     /**
@@ -101,7 +138,23 @@ class BorrowingController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $respAdmin = ApiService::GetDataByEndPoint('admins/current');
+        $respBorrowing = ApiService::GetDataByEndPoint('borrowings/' . $id);
+        // dd($respBorrowing);
+        if ($respAdmin['statusCode'] != 200 || $respBorrowing['statusCode'] != 200) {
+            Session::flush();
+            return ApiService::unauthorizedRedirect();
+        }
+        $admin = $respAdmin['bodyContents']['data'];
+        $borrowing = $respBorrowing['bodyContents']['data'];
+        $data = [
+            'admin' => $admin,
+            'borrowing' => $borrowing,
+            'url' => 'name',
+            'active' => "borrowings",
+        ];
+
+        return view('admin.borrowings.show', $data);
     }
 
     /**
