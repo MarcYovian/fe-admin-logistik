@@ -49,27 +49,28 @@
             <table class="min-w-full bg-white">
                 <thead class="bg-gray-800 text-white">
                     <tr>
-                        <th class="w-1/6 text-left py-3 px-4 uppercase font-semibold text-sm">ID</th>
                         <th class="w-1/6 text-left py-3 px-4 uppercase font-semibold text-sm">UKM Name</th>
                         <th class="w-1/6 text-left py-3 px-4 uppercase font-semibold text-sm">Event Name</th>
                         <th class="w-1/6 text-left py-3 px-4 uppercase font-semibold text-sm">Participants</th>
                         <th class="w-1/6 text-left py-3 px-4 uppercase font-semibold text-sm">Event Date</th>
                         <th class="w-1/6 text-left py-3 px-4 uppercase font-semibold text-sm">Student</th>
+                        <th class="w-1/6 text-left py-3 px-4 uppercase font-semibold text-sm">Status</th>
                         <th class="w-1/6 text-left py-3 px-4 uppercase font-semibold text-sm">Actions</th>
                     </tr>
                 </thead>
                 <tbody class="text-gray-700">
                     @foreach ($borrowings as $borrowing)
                         <tr>
-                            <td class="w-1/6 text-left py-3 px-4">{{ $borrowing['id'] }}</td>
                             <td class="w-1/6 text-left py-3 px-4">{{ $borrowing['ukm_name'] }}</td>
                             <td class="w-1/6 text-left py-3 px-4">{{ $borrowing['event_name'] }}</td>
                             <td class="w-1/6 text-left py-3 px-4">{{ $borrowing['num_of_participants'] }}</td>
                             <td class="w-1/6 text-left py-3 px-4">
                                 {{ \Carbon\Carbon::parse($borrowing['event_date'])->format('d M Y H:i') }}</td>
                             <td class="w-1/6 text-left py-3 px-4">{{ $borrowing['student']['name'] }}</td>
+                            <td class="w-1/6 text-left py-3 px-4">{{ $borrowing['status'] }}</td>
                             <td class="w-1/6 text-left py-3 px-4">
-                                <a href="#" class="text-blue-500 hover:underline">View Details</a>
+                                <a href="{{ route('borrowings.show', $borrowing['id']) }}"
+                                    class="text-blue-500 hover:underline">View Details</a>
                             </td>
                         </tr>
                     @endforeach
@@ -78,3 +79,23 @@
         </div>
     </main>
 @endsection
+
+@push('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var success = document.getElementById('toast-success');
+            var danger = document.getElementById('toast-danger');
+            if (success) {
+                setTimeout(function() {
+                    success.style.display = 'none';
+                }, 5000); // Hide after 5 seconds
+            }
+
+            if (danger) {
+                setTimeout(function() {
+                    danger.style.display = 'none';
+                }, 5000)
+            }
+        });
+    </script>
+@endpush

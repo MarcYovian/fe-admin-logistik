@@ -58,7 +58,7 @@ class APIService
         return $resp;
     }
 
-    public static function PostDataByEndPoint($endPoint, $body, $files = [])
+    public static function PostMultiPartData($endPoint, $body, $files = [])
     {
         $baseApiUrl = EndPoints::getBaseUrl();
         $url = $baseApiUrl . $endPoint;
@@ -91,6 +91,38 @@ class APIService
         $response['bodyContents'] = json_decode($request->getBody()->getContents(), true);
         return $response;
     }
+    public static function postJsonData($endPoint, $data)
+    {
+        $baseApiUrl = EndPoints::getBaseUrl();
+        $url = $baseApiUrl . $endPoint;
+        $client = new Client(self::getHttpHeaders());
+
+        try {
+            $response = $client->post($url, [
+                'json' => $data,
+                'verify' => false
+            ]);
+
+            return [
+                'statusCode' => $response->getStatusCode(),
+                'bodyContents' => json_decode($response->getBody()->getContents(), true)
+            ];
+        } catch (\Exception $e) {
+            return [
+                'statusCode' => 500,
+                'bodyContents' => ['error' => $e->getMessage()]
+            ];
+        }
+    }
+
+    public static function postDataByEndPoint($endPoint, $body, $files = [])
+    {
+        if (empty($files)) {
+            return self::postJsonData($endPoint, $body);
+        } else {
+            return self::postMultipartData($endPoint, $body, $files);
+        }
+    }
     public static function PutDataByEndPoint($endPoint, $body, $files = [])
     {
         $baseApiUrl = EndPoints::getBaseUrl();
@@ -119,6 +151,7 @@ class APIService
             'multipart' => $multipart,
             'verify' => false
         ]);
+        dd($request);
 
         $response['statusCode'] = $request->getStatusCode();
         $response['bodyContents'] = json_decode($request->getBody()->getContents(), true);

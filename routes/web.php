@@ -46,4 +46,5 @@ Route::middleware(['auth.api'])->group(function () {
     Route::post('borrowings/store/step1', [BorrowingController::class, 'storeStep1'])->name('borrowing.store.step1');
     Route::get('borrowings/create/step2', [BorrowingController::class, 'createStep2'])->name('borrowings.create.step2');
     Route::post('borrowings/store/step2', [BorrowingController::class, 'storeStep2'])->name('borrowing.store.step2');
+    Route::get('borrowings/{id}', [BorrowingController::class, 'show'])->name('borrowings.show');
 });
