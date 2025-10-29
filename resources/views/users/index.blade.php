@@ -66,7 +66,7 @@
             const token = '{{ session()->get('api_token') }}';
 
             $.ajax({
-                url: 'http://127.0.0.1:8000/api/v1/admins/users/' + adminId + '/is-active',
+                url: 'http://logistik-api.test/api/v1/admins/users/' + adminId + '/is-active',
                 type: 'PUT',
                 contentType: "application/json",
                 headers: {

@@ -85,6 +85,7 @@ class AssetController extends Controller implements HasMiddleware
         try {
             //code...
             $resp = APIService::PostDataByEndPoint('assets', $data, $files);
+            // dd($resp);
             $statusCode = $resp['statusCode'];
             // handle server error
             if ($statusCode >= 500) {
@@ -94,7 +95,7 @@ class AssetController extends Controller implements HasMiddleware
                     message: json_encode($errors)
                 );
             }
-            if ($statusCode >= 400 || $statusCode < 500) {
+            if ($statusCode >= 400 && $statusCode < 500) {
                 $errors = $resp['bodyContents'];
                 throw new HttpException(
                     statusCode: $statusCode,

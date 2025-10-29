@@ -121,6 +121,8 @@ class BorrowingController extends Controller
                 );
             }
             // dd($resp);
+            Session::forget('borrowing_step1');
+            Session::forget('borrowing_step2');
             return redirect()->route('borrowings.index')->with('success', 'Borrowing created successfully');
         } catch (HttpException $e) {
             // handle http exception
